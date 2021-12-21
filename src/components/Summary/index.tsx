@@ -4,7 +4,7 @@ import incomeImg from '../../assets/income.svg'
 import outcomeImg from '../../assets/outcome.svg'
 import totalImg from '../../assets/total.svg'
 
-import { Container } from "./styles";
+import { Container, TotalSummary } from "./styles";
 
 export function Summary() {
   const { transactions } = useTransactions()
@@ -25,9 +25,15 @@ export function Summary() {
     total: 0,
   })
 
+  let positiveBalance = true;
+
+  if (summary.total < 0) {
+    positiveBalance = false;
+  }
+
   return (
     <Container>
-      <div>
+      <div className="not-total">
         <header>
           <p>Entradas</p>
           <img src={incomeImg} alt="income" />
@@ -39,7 +45,7 @@ export function Summary() {
           }).format(summary.deposits)}
         </strong>
       </div>
-      <div>
+      <div className="not-total">
         <header>
           <p>Saídas</p>
           <img src={outcomeImg} alt="outcome" />
@@ -52,7 +58,7 @@ export function Summary() {
           }).format(summary.withdrawals)}
         </strong>
       </div>
-      <div className='highlight-background'>
+      <TotalSummary isPositive={positiveBalance}>
         <header>
           <p>Total</p>
           <img src={totalImg} alt="total" />
@@ -63,7 +69,7 @@ export function Summary() {
             currency: 'BRL'
           }).format(summary.total)}
         </strong>
-      </div>
+      </TotalSummary>
     </Container>
   )
 }
